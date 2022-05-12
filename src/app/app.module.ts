@@ -9,6 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 // Onsignal
 import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
+// Storage
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    IonicStorageModule.forRoot()
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

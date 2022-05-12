@@ -1,21 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title class="ion-text-center">
-      Push App
+      PUSH APP !!!
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <ng-container *ngIf="pushSvc.mensajes.length > 0">
+  <ng-container *ngIf="mensajes.length > 0">
     <ion-list>
       <ion-list-header>
         <ion-label>Notificaciones Push</ion-label>
       </ion-list-header>
   
       
-      <ion-item *ngFor="let push of pushSvc.mensajes">
+      <ion-item *ngFor="let push of mensajes">
         <ion-label>
           <h3>{{ push.title }}</h3>
           <p>{{ push.body }}</p>
