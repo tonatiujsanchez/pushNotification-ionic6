@@ -12,18 +12,27 @@ import { ApplicationRef } from '@angular/core';
 export class HomePage implements OnInit{
 
   mensajes: OSNotificationPayload[] = [];  
+  
+  get userId(){
+    return this.pushSvc.userId;
+  }
 
   constructor( 
     private pushSvc: PushService,
     private appRef: ApplicationRef ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    
+    this.mensajes = await this.pushSvc.getMensajes();
+
     this.pushSvc.pushListener.subscribe(
       ( newNotification ) => {
         this.mensajes = [ newNotification, ...this.mensajes ];
         this.appRef.tick();
       }
     )
+
+
   }
 
   async ionViewWillEnter() {  

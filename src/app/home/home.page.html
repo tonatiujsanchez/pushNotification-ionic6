@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title class="ion-text-center">
-      PUSH APP
+     ⚡ PUSH APP ⚡
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -11,7 +11,7 @@
   <ng-container *ngIf="mensajes.length > 0">
     <ion-list>
       <ion-list-header>
-        <ion-label>Notificaciones Push</ion-label>
+        <ion-label>Notificaciones Push<span *ngIf="userId"> - UserID: {{ userId }}</span></ion-label>
       </ion-list-header>
   
       

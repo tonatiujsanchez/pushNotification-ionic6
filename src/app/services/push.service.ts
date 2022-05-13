@@ -11,6 +11,8 @@ export class PushService {
   private _storage: Storage | null = null;
   private keyStorage = '1652387572547-pushApp'
 
+  public userId: string;
+
   mensajes: OSNotificationPayload[] = [
     // {
     //   title: 'Titulo de la push',
@@ -96,6 +98,12 @@ export class PushService {
       console.log( 'Notificacion abierta', resp.notification );
       await this.notificationReceived( resp.notification )
     });
+
+    // Obtener el ID del usuario para porder enviarle notificaciones personaliadas
+    this.oneSignal.getIds().then( info => {
+      this.userId = info.userId;
+    })
+
 
     this.oneSignal.endInit();
   }
