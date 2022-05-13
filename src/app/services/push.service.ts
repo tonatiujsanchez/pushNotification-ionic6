@@ -13,13 +13,7 @@ export class PushService {
 
   public userId: string;
 
-  mensajes: OSNotificationPayload[] = [
-    // {
-    //   title: 'Titulo de la push',
-    //   body: 'Este es el body',
-    //   date: new Date()
-    // }
-  ];
+  mensajes: OSNotificationPayload[] = [];
 
   pushListener = new EventEmitter<OSNotificationPayload>();
 
@@ -34,6 +28,10 @@ export class PushService {
   async getMensajes() {
     await this.loadRegistros;
     return [...this.mensajes];
+  }
+
+  getPush( idNotification ) {
+    return this.mensajes.find( mensaje => mensaje.notificationID === idNotification );
   }
 
   async loadRegistros() {
@@ -52,6 +50,8 @@ export class PushService {
 
     this.mensajes = resgitrosStorage || [];
 
+    console.log( this.mensajes );
+    
     return this.mensajes;
 
   }
@@ -72,6 +72,11 @@ export class PushService {
     this.mensajes = [ nuevoRegistro, ...this.mensajes ];
 
     // Guardamos el estorage con los nuevos mensajes
+    this.guardarStorage();
+  }
+
+  eliminarRegistro( registro:OSNotificationPayload ){
+    this.mensajes = this.mensajes.filter( r => r.notificationID !== registro.notificationID )
     this.guardarStorage();
   }
 

@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+  },
+  {
+    path: 'details/:idNotification',
+    loadChildren: () => import('../details/details.module').then( m => m.DetailsPageModule)
   }
 ];
 

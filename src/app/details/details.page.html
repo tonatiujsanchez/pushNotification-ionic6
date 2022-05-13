@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    
+    <ion-buttons slot="start">
+      <ion-back-button color="dark" defaultHref="/" text="Atras"></ion-back-button>
+    </ion-buttons>
+    
+    <ion-title>{{ notification.title }}</ion-title>
+  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <pre>
+  {{ notification | json }}
+  </pre>
+
+</ion-content>

@@ -1,8 +1,12 @@
-import { OnInit } from '@angular/core';
-import { Component } from '@angular/core';
+import { OnInit, Component, ApplicationRef, ViewChild } from '@angular/core';
+// import { Component } from '@angular/core';
+// import { ApplicationRef } from '@angular/core';
+// import { ViewChild } from '@angular/core';
 import { PushService } from '../services/push.service';
 import { OSNotificationPayload } from '@awesome-cordova-plugins/onesignal/ngx';
-import { ApplicationRef } from '@angular/core';
+import { IonList } from '@ionic/angular';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-home',
@@ -10,6 +14,8 @@ import { ApplicationRef } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit{
+
+  @ViewChild(IonList) listaRegistros: IonList;
 
   mensajes: OSNotificationPayload[] = [];  
   
@@ -19,7 +25,8 @@ export class HomePage implements OnInit{
 
   constructor( 
     private pushSvc: PushService,
-    private appRef: ApplicationRef ) {}
+    private appRef: ApplicationRef,
+    private router: Router ) {}
 
   async ngOnInit() {
     
@@ -31,16 +38,25 @@ export class HomePage implements OnInit{
         this.appRef.tick();
       }
     )
-
-
   }
 
-  async ionViewWillEnter() {  
-    console.log('WillEnter cargar mensajes');
-    
+  verPush( idRegistro ) {
+    this.router.navigate(['/home/details', idRegistro]);
+  }
+
+  async ionViewWillEnter() {      
     this.mensajes = await this.pushSvc.getMensajes();
   }
 
   
+  eliminarRegistro(registro:OSNotificationPayload) {
+
+    this.pushSvc.eliminarRegistro( registro );
+    this.mensajes = this.mensajes.filter( r => r.notificationID !== registro.notificationID )
+
+    this.listaRegistros.closeSlidingItems();
+  }
+
+
 
 }
