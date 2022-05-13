@@ -57,10 +57,19 @@ export class PushService {
 
   async agregarNuevoRegistro( nuevoRegistro ){
 
+    // Cargar registros del storage
     await this.loadRegistros();
 
+    // Verificar que no la notificacion no exista
+    const existPush = this.mensajes.find( mensaje => mensaje.notificationID === nuevoRegistro.notificationID )
+    if( existPush ){ return }
+
+    // Emitimos el evento para añadirla
+    this.pushListener.emit( nuevoRegistro )
+    // La agregamos al nuestro arreglo de mensajes del servicio 
     this.mensajes = [ nuevoRegistro, ...this.mensajes ];
 
+    // Guardamos el estorage con los nuevos mensajes
     this.guardarStorage();
   }
 
@@ -81,26 +90,21 @@ export class PushService {
       
     });
 
-    this.oneSignal.handleNotificationOpened().subscribe(( resp ) => {
+    this.oneSignal.handleNotificationOpened().subscribe( async( resp ) => {
       // Notificación abierta
 
-      console.log( 'Notificacion abierta', resp );
-      
+      console.log( 'Notificacion abierta', resp.notification );
+      await this.notificationReceived( resp.notification )
     });
 
     this.oneSignal.endInit();
   }
 
 
-  notificationReceived( notification: OSNotification ) {
+  async notificationReceived( notification: OSNotification ) {
     const payload = notification.payload
 
-    const existPush = this.mensajes.find( mensaje => mensaje.notificationID === payload.notificationID )
-
-    if( existPush ){ return }
-
-    this.pushListener.emit( payload )
-    this.agregarNuevoRegistro( payload )
+    await this.agregarNuevoRegistro( payload )
     console.log( this.mensajes );
     
   }
